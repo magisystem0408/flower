@@ -13,14 +13,12 @@
 # limitations under the License.
 # ==============================================================================
 """Provides a variaty of baseline settings for Fashion-MNIST."""
-
-
-import random
 from typing import List, Optional, Tuple
 
 import numpy as np
 
 from flwr_experimental.ops.instance import Instance
+import secrets
 
 # We assume that devices which are older will have at most
 # ~80% of the the Samsung Galaxy Note 5 compute performance.
@@ -52,7 +50,7 @@ def sample_delay_factors(
 
 def sample_real_delay_factors(num_clients: int, seed: int = 2021) -> List[float]:
     """Split list of floats into two buckets."""
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
 
     if num_clients % 2 != 0:
         raise Exception("num_clients has to be divisible by two")
@@ -68,7 +66,7 @@ def sample_real_delay_factors(num_clients: int, seed: int = 2021) -> List[float]
 
     for idx in range(num_clients):
         # higher probability to pick bucket 0 with low idx
-        bucket_idx = random.choices([0, 1], [num_clients - idx, idx])[0]
+        bucket_idx = secrets.SystemRandom().choices([0, 1], [num_clients - idx, idx])[0]
         picked_bucket = buckets[bucket_idx]
         other_bucket = buckets[bucket_idx - 1]
 
@@ -90,7 +88,7 @@ def get_delay_factor() -> float:
     values_prob = [val[2] for val in DEVICE_DISTRIBUTION]
     values_perf = [val[3] for val in DEVICE_DISTRIBUTION]
     max_perf = max(values_perf)
-    chosen_score = random.choices(values_perf, values_prob)[0]
+    chosen_score = secrets.SystemRandom().choices(values_perf, values_prob)[0]
     return round(max_perf / chosen_score - 1, 4)
 
 

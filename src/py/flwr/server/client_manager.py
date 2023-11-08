@@ -13,15 +13,13 @@
 # limitations under the License.
 # ==============================================================================
 """Flower ClientManager."""
-
-
-import random
 import threading
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional
 
 from .client_proxy import ClientProxy
 from .criterion import Criterion
+import secrets
 
 
 class ClientManager(ABC):
@@ -134,5 +132,5 @@ class SimpleClientManager(ClientManager):
             available_cids = [
                 cid for cid in available_cids if criterion.select(self.clients[cid])
             ]
-        sampled_cids = random.sample(available_cids, num_clients)
+        sampled_cids = secrets.SystemRandom().sample(available_cids, num_clients)
         return [self.clients[cid] for cid in sampled_cids]
