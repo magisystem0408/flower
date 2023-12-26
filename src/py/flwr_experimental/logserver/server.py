@@ -50,7 +50,7 @@ def write_to_logfile(line: str) -> None:
 
 def is_credentials_available() -> bool:
     """Return True is credentials are available in CONFIG."""
-    return all([v is not None for v in CONFIG.values()])
+    return all(v is not None for v in CONFIG.values())
 
 
 def upload_file(local_filepath: str, s3_key: Optional[str]) -> None:

@@ -97,11 +97,8 @@ def create_instances(adapter: Adapter, instances: List[Instance], timeout: int) 
     Fails if CPU and RAM of instances are not all the same.
     """
     if not all(
-        [
-            ins.num_cpu == instances[0].num_cpu and ins.num_ram == instances[0].num_ram
-            for ins in instances
-        ]
-    ):
+        ins.num_cpu == instances[0].num_cpu and ins.num_ram == instances[0].num_ram
+            for ins in instances):
         raise InstanceMismatch(
             "Values of num_cpu and num_ram have to be equal for all instances."
         )
