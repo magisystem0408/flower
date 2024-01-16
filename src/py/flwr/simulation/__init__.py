@@ -16,9 +16,8 @@
 
 import importlib
 
-is_ray_installed = importlib.util.find_spec("ray") is not None
 
-if is_ray_installed:
+if is_ray_installed := importlib.util.find_spec("ray") is not None:
     from flwr.simulation.app import start_simulation
 else:
     RAY_IMPORT_ERROR: str = """Unable to import module `ray`.

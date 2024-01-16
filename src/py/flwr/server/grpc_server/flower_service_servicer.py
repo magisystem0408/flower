@@ -44,9 +44,8 @@ def register_client(
     context: grpc.ServicerContext,
 ) -> bool:
     """Try registering GrpcClientProxy with ClientManager."""
-    is_success = client_manager.register(client)
 
-    if is_success:
+    if is_success := client_manager.register(client):
 
         def rpc_termination_callback() -> None:
             client.bridge.close()
@@ -89,9 +88,8 @@ class FlowerServiceServicer(transport_pb2_grpc.FlowerServiceServicer):
         peer = context.peer()
         bridge = self.grpc_bridge_factory()
         client = self.client_factory(peer, bridge)
-        is_success = register_client(self.client_manager, client, context)
 
-        if is_success:
+        if is_success := register_client(self.client_manager, client, context):
             # Get iterators
             client_message_iterator = request_iterator
             server_message_iterator = bridge.server_message_iterator()

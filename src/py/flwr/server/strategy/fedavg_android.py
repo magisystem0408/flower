@@ -160,8 +160,7 @@ class FedAvgAndroid(Strategy):
             # No evaluation function provided
             return None
         weights = self.parameters_to_weights(parameters)
-        eval_res = self.eval_fn(weights)
-        if eval_res is None:
+        if (eval_res := self.eval_fn(weights)) is None:
             return None
         loss, other = eval_res
         if isinstance(other, float):

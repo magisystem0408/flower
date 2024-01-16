@@ -47,9 +47,8 @@ def compile_all() -> None:
         f"--mypy_grpc_out={OUT_PATH}",
     ] + PROTO_FILES
 
-    exit_code = protoc.main(command)
 
-    if exit_code != 0:
+    if (exit_code := protoc.main(command)) != 0:
         raise Exception(f"Error: {command} failed")
 
 

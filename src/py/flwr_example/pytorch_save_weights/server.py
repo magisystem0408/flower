@@ -34,8 +34,7 @@ class SaveModelStrategy(fl.server.strategy.FedAvg):
         results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]],
         failures: List[BaseException],
     ) -> Optional[fl.common.Weights]:
-        weights = super().aggregate_fit(rnd, results, failures)
-        if weights is not None:
+        if (weights := super().aggregate_fit(rnd, results, failures)) is not None:
             # Save weights
             print(f"Saving round {rnd} weights...")
             np.savez(f"round-{rnd}-weights.npz", *weights)

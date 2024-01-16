@@ -118,8 +118,7 @@ class Server:
         log(INFO, "Initializing global parameters")
         self.parameters = self._get_initial_parameters()
         log(INFO, "Evaluating initial parameters")
-        res = self.strategy.evaluate(parameters=self.parameters)
-        if res is not None:
+        if (res := self.strategy.evaluate(parameters=self.parameters)) is not None:
             log(
                 INFO,
                 "initial parameters (loss, other metrics): %s, %s",
@@ -135,15 +134,13 @@ class Server:
 
         for current_round in range(1, num_rounds + 1):
             # Train model and replace previous global model
-            res_fit = self.fit_round(rnd=current_round)
-            if res_fit:
+            if res_fit := self.fit_round(rnd=current_round):
                 parameters_prime, _, _ = res_fit  # fit_metrics_aggregated
                 if parameters_prime:
                     self.parameters = parameters_prime
 
             # Evaluate model using strategy implementation
-            res_cen = self.strategy.evaluate(parameters=self.parameters)
-            if res_cen is not None:
+            if (res_cen := self.strategy.evaluate(parameters=self.parameters)) is not None:
                 loss_cen, metrics_cen = res_cen
                 log(
                     INFO,
@@ -157,8 +154,7 @@ class Server:
                 history.add_metrics_centralized(rnd=current_round, metrics=metrics_cen)
 
             # Evaluate model on a sample of available clients
-            res_fed = self.evaluate_round(rnd=current_round)
-            if res_fed:
+            if res_fed := self.evaluate_round(rnd=current_round):
                 loss_fed, evaluate_metrics_fed, _ = res_fed
                 if loss_fed:
                     history.add_loss_distributed(rnd=current_round, loss=loss_fed)
@@ -177,8 +173,7 @@ class Server:
     ) -> Optional[Tuple[Optional[float], EvaluateResultsAndFailures]]:
         """Validate current global model on a number of clients."""
         log(WARNING, DEPRECATION_WARNING_EVALUATE)
-        res = self.evaluate_round(rnd)
-        if res is None:
+        if (res := self.evaluate_round(rnd)) is None:
             return None
         # Deconstruct
         loss, _, results_and_failures = res
@@ -319,8 +314,7 @@ def shutdown(clients: List[ClientProxy]) -> ReconnectResultsAndFailures:
     results: List[Tuple[ClientProxy, Disconnect]] = []
     failures: List[BaseException] = []
     for future in futures:
-        failure = future.exception()
-        if failure is not None:
+        if (failure := future.exception()) is not None:
             failures.append(failure)
         else:
             result = future.result()
@@ -350,8 +344,7 @@ def fit_clients(
     results: List[Tuple[ClientProxy, FitRes]] = []
     failures: List[BaseException] = []
     for future in futures:
-        failure = future.exception()
-        if failure is not None:
+        if (failure := future.exception()) is not None:
             failures.append(failure)
         else:
             # Success case
@@ -379,8 +372,7 @@ def evaluate_clients(
     results: List[Tuple[ClientProxy, EvaluateRes]] = []
     failures: List[BaseException] = []
     for future in futures:
-        failure = future.exception()
-        if failure is not None:
+        if (failure := future.exception()) is not None:
             failures.append(failure)
         else:
             # Success case

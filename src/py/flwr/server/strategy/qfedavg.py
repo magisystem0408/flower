@@ -185,8 +185,7 @@ class QFedAvg(FedAvg):
             raise Exception("QffedAvg pre_weights are None in aggregate_fit")
 
         weights_before = self.pre_weights
-        eval_result = self.evaluate(weights_to_parameters(weights_before))
-        if eval_result is not None:
+        if (eval_result := self.evaluate(weights_to_parameters(weights_before))) is not None:
             loss, _ = eval_result
 
         for _, fit_res in results:

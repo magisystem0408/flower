@@ -231,9 +231,8 @@ class Cluster:
         instance = self.get_instance(instance_name)
 
         with ssh_connection(instance, self.ssh_credentials) as client:
-            sftp = client.open_sftp()
 
-            if sftp is not None:
+            if (sftp := client.open_sftp()) is not None:
                 sftp_file_attributes = sftp.put(local_path, remote_path)
 
         return sftp_file_attributes
