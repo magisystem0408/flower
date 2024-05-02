@@ -2,10 +2,10 @@
 
 import collections
 import itertools
-import random
 
 import numpy as np
 import tensorflow as tf
+import secrets
 
 
 class AudioTools:  # pylint: disable=too-many-instance-attributes
@@ -304,7 +304,7 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
                 *[
                     [
                         dataset_per_class[i].pop(
-                            random.Random(seed).randrange(len(dataset_per_class[i]))
+                            secrets.SystemRandom().Random(seed).randrange(len(dataset_per_class[i]))
                         )
                         for _ in range(class_num_samples[i])
                     ]
@@ -313,8 +313,8 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
             )
         )
         subset_u = list(itertools.chain(*dataset_per_class))
-        random.Random(seed).shuffle(subset)
-        random.Random(seed).shuffle(subset_u)
+        secrets.SystemRandom().Random(seed).shuffle(subset)
+        secrets.SystemRandom().Random(seed).shuffle(subset_u)
         subset_u = (
             subset_u[0 : int((len(subset_u) - 1) * u_per)] if u_per < 1.0 else subset_u
         )
@@ -403,10 +403,10 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
                     *[[idx] * clients for idx, clients in enumerate(distribution)]
                 )
             )
-            random.Random(seed).shuffle(distribution)
+            secrets.SystemRandom().Random(seed).shuffle(distribution)
         else:
             classes = list(range(_num_classes_))
-            random.Random(seed).shuffle(classes)
+            secrets.SystemRandom().Random(seed).shuffle(classes)
             _iter_ = iter(classes)
 
             def distribute_fun():
@@ -481,7 +481,7 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
         -------
         - A list of datasets, each corresponding to a different speaker.
         """
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
         np.random.seed(seed)
         dataset = tuple(list(t) for t in zip(*dataset))
         datasets = [
@@ -522,7 +522,7 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
         - A list of datasets for each client, with a controlled class distribution.
         """
         dataset = tuple(list(t) for t in zip(*dataset))
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
         np.random.seed(seed)
         probability_distribution = np.random.normal(
             mean_class_distribution, np.sqrt(class_variance), num_clients
@@ -610,9 +610,9 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
         - A list representing the distribution of samples among clients.
         """
         distribution = [minimum] * num_clients
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
         while remain_samples > 0:
-            idx = random.randint(0, len(distribution) - 1)
+            idx = secrets.SystemRandom().randint(0, len(distribution) - 1)
             distribution[idx], remain_samples = (
                 (distribution[idx] + 1, remain_samples - 1)
                 if distribution[idx] < maximum
@@ -620,7 +620,7 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
             )
         # Add error due to rounding to random positions.
         for _i in range(round(round_error)):
-            idx = random.randint(0, len(distribution) - 1)
+            idx = secrets.SystemRandom().randint(0, len(distribution) - 1)
             distribution[idx] = (
                 distribution[idx] + 1
                 if sum(distribution) + 1 <= num_samples
@@ -665,7 +665,7 @@ class DataTools:  # pylint: disable=too-many-instance-attributes
         -------
         - The shuffled dataset as a tuple of two lists, one for data and one for labels.
         """
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
         dataset = list(zip(dataset[0], dataset[1]))
-        random.shuffle(dataset)
+        secrets.SystemRandom().shuffle(dataset)
         return tuple(list(t) for t in zip(*dataset))

@@ -16,7 +16,6 @@
 
 
 from math import pi
-from random import shuffle
 from typing import Dict, List, Tuple, Type
 
 import ray
@@ -44,6 +43,7 @@ from flwr.simulation.ray_transport.ray_actor import (
     VirtualClientEngineActorPool,
 )
 from flwr.simulation.ray_transport.ray_client_proxy import RayActorClientProxy
+import secrets
 
 
 class DummyClient(NumPyClient):
@@ -140,7 +140,7 @@ def test_cid_consistency_all_submit_first_run_consistency() -> None:
     recordset = getpropertiesins_to_recordset(getproperties_ins)
 
     # submit all jobs (collect later)
-    shuffle(proxies)
+    secrets.SystemRandom().shuffle(proxies)
     for prox in proxies:
         # Register state
         prox.proxy_state.register_context(run_id=run_id)
@@ -159,7 +159,7 @@ def test_cid_consistency_all_submit_first_run_consistency() -> None:
         )
 
     # fetch results one at a time
-    shuffle(proxies)
+    secrets.SystemRandom().shuffle(proxies)
     for prox in proxies:
         message_out, updated_context = prox.actor_pool.get_client_result(
             prox.cid, timeout=None
@@ -191,7 +191,7 @@ def test_cid_consistency_without_proxies() -> None:
         return ClientApp(client_fn=get_dummy_client)
 
     # submit all jobs (collect later)
-    shuffle(cids)
+    secrets.SystemRandom().shuffle(cids)
     for cid in cids:
         message = Message(
             content=recordset,
@@ -213,7 +213,7 @@ def test_cid_consistency_without_proxies() -> None:
         )
 
     # fetch results one at a time
-    shuffle(cids)
+    secrets.SystemRandom().shuffle(cids)
     for cid in cids:
         message_out, _ = pool.get_client_result(cid, timeout=None)
         res = recordset_to_getpropertiesres(message_out.content)

@@ -2,7 +2,6 @@
 
 import os
 import pickle
-import random
 import time
 from pathlib import Path
 from secrets import token_hex
@@ -15,6 +14,7 @@ from flwr.common import NDArrays
 from flwr.server import History
 from omegaconf import DictConfig
 from torch.nn import Module
+import secrets
 
 
 def plot_metric_from_history(
@@ -65,7 +65,7 @@ def seed_everything(seed):
     """Seed everything for reproducibility."""
     np.random.seed(seed)
     torch.manual_seed(seed)
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     torch.backends.cudnn.deterministic = True
 
 

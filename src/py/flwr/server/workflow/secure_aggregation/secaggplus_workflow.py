@@ -13,9 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 """Workflow for the SecAgg+ protocol."""
-
-
-import random
 from dataclasses import dataclass, field
 from logging import DEBUG, ERROR, INFO, WARN
 from typing import Dict, List, Optional, Set, Tuple, Union, cast
@@ -59,6 +56,7 @@ from flwr.server.driver import Driver
 
 from ..constant import MAIN_CONFIGS_RECORD, MAIN_PARAMS_RECORD
 from ..constant import Key as WorkflowKey
+import secrets
 
 
 @dataclass
@@ -350,7 +348,7 @@ class SecAggPlusWorkflow:
             state.num_shares += 1
 
         # Shuffle node IDs
-        random.shuffle(sampled_node_ids)
+        secrets.SystemRandom().shuffle(sampled_node_ids)
         # Build neighbour relations (node ID -> secure IDs of neighbours)
         half_share = state.num_shares >> 1
         state.nid_to_neighbours = {

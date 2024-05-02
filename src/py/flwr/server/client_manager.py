@@ -13,9 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 """Flower ClientManager."""
-
-
-import random
 import threading
 from abc import ABC, abstractmethod
 from logging import INFO
@@ -25,6 +22,7 @@ from flwr.common.logger import log
 
 from .client_proxy import ClientProxy
 from .criterion import Criterion
+import secrets
 
 
 class ClientManager(ABC):
@@ -202,5 +200,5 @@ class SimpleClientManager(ClientManager):
             )
             return []
 
-        sampled_cids = random.sample(available_cids, num_clients)
+        sampled_cids = secrets.SystemRandom().sample(available_cids, num_clients)
         return [self.clients[cid] for cid in sampled_cids]
