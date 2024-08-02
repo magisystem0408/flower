@@ -16,7 +16,6 @@
 
 
 import itertools
-import random
 import time
 from dataclasses import dataclass
 from typing import (
@@ -32,6 +31,7 @@ from typing import (
     Union,
     cast,
 )
+import secrets
 
 
 def exponential(
@@ -85,7 +85,7 @@ def full_jitter(max_value: float) -> float:
     max_value : float
         The upper limit for the randomized value.
     """
-    return random.uniform(0, max_value)
+    return secrets.SystemRandom().uniform(0, max_value)
 
 
 @dataclass

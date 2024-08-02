@@ -3,8 +3,6 @@
 In a FedMeta experiment, there is a train and a test client. So we modified the manager
 to sample from each list each round.
 """
-
-import random
 from logging import INFO
 from typing import List, Optional
 
@@ -12,6 +10,7 @@ from flwr.common.logger import log
 from flwr.server.client_manager import SimpleClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.criterion import Criterion
+import secrets
 
 
 class FedmetaClientManager(SimpleClientManager):
@@ -62,6 +61,6 @@ class FedmetaClientManager(SimpleClientManager):
             )
             return []
         if server_round is not None:
-            random.seed(server_round)
-        sampled_cids = random.sample(available_cids, num_clients)
+            secrets.SystemRandom().seed(server_round)
+        sampled_cids = secrets.SystemRandom().sample(available_cids, num_clients)
         return [self.clients[cid] for cid in sampled_cids]

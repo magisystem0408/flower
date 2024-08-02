@@ -5,7 +5,6 @@ import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
 import numpy as np
 from datasets import concatenate_datasets
-import random
 
 from utils import (
     get_model,
@@ -15,8 +14,9 @@ from utils import (
     get_encoding_fn,
     remove_cols,
 )
+import secrets
 
-random.seed(1989)
+secrets.SystemRandom().seed(1989)
 torch.set_float32_matmul_precision(
     "high"
 )  #  If “high” or “medium” are set then the TensorFloat32 is used
