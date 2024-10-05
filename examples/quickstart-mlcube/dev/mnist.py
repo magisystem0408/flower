@@ -120,7 +120,7 @@ def train(task_args: List[str]) -> None:
     args = parser.parse_args(args=task_args)
 
     with open(args.parameters_file, "r") as stream:
-        parameters = yaml.load(stream, Loader=yaml.FullLoader)
+        parameters = yaml.load(stream, Loader=yaml.SafeLoader)
     logger.info("Parameters have been read (%s).", args.parameters_file)
 
     dataset_file = os.path.join(args.data_dir, "mnist.npz")
@@ -206,7 +206,7 @@ def evaluate(task_args: List[str]) -> None:
     args = parser.parse_args(args=task_args)
 
     with open(args.parameters_file, "r") as stream:
-        parameters = yaml.load(stream, Loader=yaml.FullLoader)
+        parameters = yaml.load(stream, Loader=yaml.SafeLoader)
         logger.info("Parameters have been read (%s).", parameters)
 
     dataset_file = os.path.join(args.data_dir, "mnist.npz")
