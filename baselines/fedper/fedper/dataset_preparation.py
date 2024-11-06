@@ -1,7 +1,6 @@
 """Dataset preparation."""
 
 import os
-import random
 from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Union
@@ -12,6 +11,7 @@ import torch
 import torchvision
 from torch.utils.data import Dataset
 from torchvision import transforms
+import secrets
 
 
 class BaseDataset(Dataset):
@@ -140,7 +140,7 @@ def randomly_assign_classes(
     assigned_labels = []
     selected_times = [0 for _ in label_list]
     for _ in range(client_num):
-        sampled_labels = random.sample(label_list, class_num)
+        sampled_labels = secrets.SystemRandom().sample(label_list, class_num)
         assigned_labels.append(sampled_labels)
         for j in sampled_labels:
             selected_times[j] += 1
@@ -193,7 +193,7 @@ def _get_data_indices(
                 batch_size = len(data_idx_for_each_label[cls])
             else:
                 batch_size = batch_sizes[cls]
-            selected_idx = random.sample(data_idx_for_each_label[cls], batch_size)
+            selected_idx = secrets.SystemRandom().sample(data_idx_for_each_label[cls], batch_size)
             data_indices_use: np.ndarray = np.concatenate(
                 [data_indices[i], selected_idx], axis=0
             ).astype(np.int64)

@@ -3,7 +3,7 @@
 import argparse
 import json
 import os
-import random
+import secrets
 
 
 def parse_args():
@@ -73,10 +73,10 @@ def main():
             lab2, length2 = partition_2[j]
 
             # randomly shuffle samples
-            random.seed(1234)
-            random.shuffle(label_name_dict[lab1])
-            random.seed(4321)
-            random.shuffle(label_name_dict[lab2])
+            secrets.SystemRandom().seed(1234)
+            secrets.SystemRandom().shuffle(label_name_dict[lab1])
+            secrets.SystemRandom().seed(4321)
+            secrets.SystemRandom().shuffle(label_name_dict[lab2])
 
             # halve samples for this class.
             first_half1 = label_name_dict[lab1][: length1 // 2]

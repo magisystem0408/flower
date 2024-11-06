@@ -1,7 +1,6 @@
 """Digits dataset."""
 
 import os
-from random import shuffle
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -9,6 +8,7 @@ from omegaconf import DictConfig
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
+import secrets
 
 
 class DigitsDataset(Dataset):
@@ -250,7 +250,7 @@ def get_data(dataset_cfg: DictConfig) -> List[Tuple[DataLoader, DataLoader, str]
 
     for dataset_name in dataset_cfg.to_include:
         parts = list(range(total_partitions))
-        shuffle(parts)
+        secrets.SystemRandom().shuffle(parts)
         for i in range(num_clients_per_dataset):
             parts_for_client = parts[i * num_parts : (i + 1) * num_parts]
             print(f"{dataset_name = } | {parts_for_client = }")

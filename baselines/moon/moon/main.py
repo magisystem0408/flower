@@ -5,7 +5,6 @@ model is going to be evaluated, etc. At the end, this script saves the results.
 """
 
 import os
-import random
 import shutil
 from pathlib import Path
 
@@ -22,6 +21,7 @@ from moon import client, server
 from moon.dataset import get_dataloader
 from moon.dataset_preparation import partition_data
 from moon.utils import plot_metric_from_history
+import secrets
 
 
 @hydra.main(config_path="conf", config_name="base", version_base=None)
@@ -45,7 +45,7 @@ def main(cfg: DictConfig) -> None:
     torch.manual_seed(cfg.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(cfg.seed)
-    random.seed(cfg.seed)
+    secrets.SystemRandom().seed(cfg.seed)
     (
         _,
         _,

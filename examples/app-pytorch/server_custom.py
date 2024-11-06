@@ -1,5 +1,4 @@
 from typing import List, Tuple, Dict
-import random
 import time
 
 import flwr as fl
@@ -19,6 +18,7 @@ from flwr.server import Driver, History
 from flwr.server.strategy.aggregate import aggregate
 
 from task import Net, get_weights
+import secrets
 
 
 # Define metric aggregation function
@@ -71,7 +71,7 @@ def main(driver: Driver, context: Context) -> None:
             print(f"Got {len(all_node_ids)} client nodes: {all_node_ids}")
             if len(all_node_ids) >= num_client_nodes_per_round:
                 # Sample client nodes
-                sampled_nodes = random.sample(all_node_ids, num_client_nodes_per_round)
+                sampled_nodes = secrets.SystemRandom().sample(all_node_ids, num_client_nodes_per_round)
                 break
             time.sleep(3)
 

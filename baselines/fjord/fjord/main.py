@@ -2,7 +2,6 @@
 
 import math
 import os
-import random
 from types import SimpleNamespace
 from typing import Any, Callable, Dict, List, Optional, Union
 
@@ -20,6 +19,7 @@ from .server import get_eval_fn
 from .strategy import FjORDFedAVG
 from .utils.logger import Logger
 from .utils.utils import get_parameters
+import secrets
 
 
 def get_fit_config_fn(
@@ -135,7 +135,7 @@ class FjORDBalancedClientManager(fl.server.SimpleClientManager):
 
         # construct p to available cids
         max_p_to_cids: Dict[float, List[int]] = {p: [] for p in self.p_s}
-        random.shuffle(available_cids)
+        secrets.SystemRandom().shuffle(available_cids)
         for cid_s in available_cids:
             client_id = int(cid_s)
             client_p = self.cid_to_max_p[client_id]
@@ -146,15 +146,15 @@ class FjORDBalancedClientManager(fl.server.SimpleClientManager):
 
         selected_cids = set()
         for p in self.p_s:
-            for cid in random.sample(max_p_to_cids[p], cl_per_tier):
+            for cid in secrets.SystemRandom().sample(max_p_to_cids[p], cl_per_tier):
                 selected_cids.add(cid)
 
         for p in self.p_s:
             if remainder == 0:
                 break
-            cid = random.choice(max_p_to_cids[p])
+            cid = secrets.choice(max_p_to_cids[p])
             while cid not in selected_cids:
-                cid = random.choice(max_p_to_cids[p])
+                cid = secrets.choice(max_p_to_cids[p])
             selected_cids.add(cid)
             remainder -= 1
 
@@ -171,7 +171,7 @@ def main(args: Any) -> None:
     torch.manual_seed(args.manual_seed)
     torch.use_deterministic_algorithms(True)
     np.random.seed(args.manual_seed)
-    random.seed(args.manual_seed)
+    secrets.SystemRandom().seed(args.manual_seed)
 
     path = args.data_path
     device = torch.device("cuda") if args.cuda else torch.device("cpu")
