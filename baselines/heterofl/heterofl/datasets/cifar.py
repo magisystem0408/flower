@@ -1,7 +1,6 @@
 """CIFAR10 dataset class, adopted from authors implementation."""
 
 import os
-import pickle
 
 import anytree
 import numpy as np
@@ -17,6 +16,7 @@ from heterofl.datasets.utils import (
     make_tree,
 )
 from heterofl.utils import check_exists, load, makedir_exist_ok, save
+import fickling
 
 
 # pylint: disable=too-many-instance-attributes
@@ -119,7 +119,7 @@ class CIFAR10(Dataset):
         with open(
             os.path.join(self.raw_folder, "cifar-10-batches-py", "batches.meta"), "rb"
         ) as fle:
-            data = pickle.load(fle, encoding="latin1")
+            data = fickling.load(fle, encoding="latin1")
             classes = data["label_names"]
         classes_to_labels = {"label": anytree.Node("U", index=[])}
         for cls in classes:
@@ -137,7 +137,7 @@ def _read_pickle_file(path, filenames):
     for filename in filenames:
         file_path = os.path.join(path, filename)
         with open(file_path, "rb") as file:
-            entry = pickle.load(file, encoding="latin1")
+            entry = fickling.load(file, encoding="latin1")
             img.append(entry["data"])
             if "labels" in entry:
                 label.extend(entry["labels"])

@@ -9,6 +9,7 @@ from typing import Dict, Union
 
 import psutil
 from flwr.server.history import History
+import fickling
 
 
 def dic_save(dictionary: Dict[str, int], filename: str):
@@ -35,7 +36,7 @@ def dic_load(filename: str) -> Dict[str, int]:
     """
     try:
         with open(filename, "rb") as dictionary_file:
-            return pickle.load(dictionary_file)
+            return fickling.load(dictionary_file)
     except IOError:
         return {"checkpoint_round": 0}
 

@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,6 +9,7 @@ import scipy.ndimage
 from omegaconf import OmegaConf
 
 from dasha.strategy import _CompressionAggregator
+import fickling
 
 
 def moving_average(x, window):
@@ -32,7 +32,7 @@ def plot(args) -> None:  # pylint: disable=redefined-outer-name, too-many-locals
             paths.append(path)
     for save_path in paths:
         with open(os.path.join(save_path, "history"), "rb") as file:
-            history = pickle.load(file)
+            history = fickling.load(file)
         with open(os.path.join(save_path, "config.yaml"), "r") as file:
             cfg = OmegaConf.load(file)
         metric = history.metrics_distributed[_CompressionAggregator.RECEIVED_BYTES]

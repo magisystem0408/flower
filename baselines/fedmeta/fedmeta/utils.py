@@ -10,6 +10,7 @@ import pickle
 from typing import Dict, List
 
 import matplotlib.pyplot as plt
+import fickling
 
 # Encoding list for the Shakespeare dataset
 ALL_LETTERS = (
@@ -119,7 +120,7 @@ def plot_from_pkl(directory="."):
 
     for file in pkl_files:
         with open(os.path.join(directory, file), "rb") as file_:
-            data = pickle.load(file_)
+            data = fickling.load(file_)
             all_data[file] = data
 
     plt.figure(figsize=(7, 12))

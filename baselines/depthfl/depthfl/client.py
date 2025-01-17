@@ -14,6 +14,7 @@ from omegaconf import DictConfig
 from torch.utils.data import DataLoader
 
 from depthfl.models import test, train
+import fickling
 
 
 def prune(state_dict, param_idx):
@@ -164,7 +165,7 @@ def gen_client_fn(  # pylint: disable=too-many-arguments
         valloader = valloaders[int(cid)]
 
         with open(f"prev_grads/client_{int(cid)}", "rb") as prev_grads_file:
-            prev_grads = pickle.load(prev_grads_file)
+            prev_grads = fickling.load(prev_grads_file)
 
         return FlowerClient(
             net,
