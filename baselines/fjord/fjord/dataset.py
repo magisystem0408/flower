@@ -1,6 +1,4 @@
 """Dataset for CIFAR10."""
-
-import random
 from typing import Optional, Tuple
 
 import numpy as np
@@ -10,6 +8,7 @@ from torch.nn import Module
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
+import secrets
 
 CIFAR_NORMALIZATION = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
 
@@ -150,7 +149,7 @@ def load_data(
     def seed_worker(worker_id):  # pylint: disable=unused-argument
         worker_seed = torch.initial_seed() % 2**32
         np.random.seed(worker_seed)
-        random.seed(worker_seed)
+        secrets.SystemRandom().seed(worker_seed)
 
     g = torch.Generator()
     g.manual_seed(seed)

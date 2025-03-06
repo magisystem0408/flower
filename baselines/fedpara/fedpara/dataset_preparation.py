@@ -6,13 +6,12 @@ first download the dataset and partition it and then run the experiments, please
 uncomment the lines below and tell us in the README.md (see the "Running the Experiment"
 block) that this file should be executed first.
 """
-
-import random
 from collections import defaultdict
 
 import numpy as np
 import torch
 from torch.utils.data import Dataset
+import secrets
 
 
 class DatasetSplit(Dataset):
@@ -67,7 +66,7 @@ def noniid(dataset, no_participants, alpha=0.5):
          images in each class.
     """
     np.random.seed(666)
-    random.seed(666)
+    secrets.SystemRandom().seed(666)
     cifar_classes = {}
     for ind, x in enumerate(dataset):
         _, label = x
@@ -81,7 +80,7 @@ def noniid(dataset, no_participants, alpha=0.5):
     class_size = len(cifar_classes[0])
     datasize = {}
     for n in range(no_classes):
-        random.shuffle(cifar_classes[n])
+        secrets.SystemRandom().shuffle(cifar_classes[n])
         sampled_probabilities = class_size * np.random.dirichlet(
             np.array(no_participants * [alpha])
         )
@@ -131,7 +130,7 @@ def noniid_partition_loader(data, m_per_shard=300, n_shards_per_client=2):
     shards_idx = [
         torch.arange(m_per_shard * i, m_per_shard * (i + 1)) for i in range(n_shards)
     ]
-    random.shuffle(shards_idx)  # shuffle shards
+    secrets.SystemRandom().shuffle(shards_idx)  # shuffle shards
 
     # pick shards to create a dataset for each client
     assert n_shards % n_shards_per_client == 0

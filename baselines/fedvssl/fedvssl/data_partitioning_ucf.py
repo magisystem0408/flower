@@ -3,7 +3,7 @@
 import argparse
 import json
 import os
-import random
+import secrets
 
 
 # Use this script file to create data partitions
@@ -45,7 +45,7 @@ def main():
     num_clients = args.num_clients
     seed = args.seed
 
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
 
     if not os.path.exists(output_path):
         os.mkdir(output_path)
@@ -58,7 +58,7 @@ def main():
         data_list += json_object
 
     # data splitting to each client
-    random.shuffle(data_list)
+    secrets.SystemRandom().shuffle(data_list)
     num_data = len(data_list)
     for i in range(0, num_clients):
         client_data = data_list[

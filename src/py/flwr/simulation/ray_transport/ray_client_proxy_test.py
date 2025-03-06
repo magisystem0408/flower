@@ -16,7 +16,6 @@
 
 
 from math import pi
-from random import shuffle
 
 import ray
 
@@ -50,6 +49,7 @@ from flwr.simulation.ray_transport.ray_actor import (
     VirtualClientEngineActorPool,
 )
 from flwr.simulation.ray_transport.ray_client_proxy import RayActorClientProxy
+import secrets
 
 
 class DummyClient(NumPyClient):
@@ -151,7 +151,7 @@ def test_cid_consistency_all_submit_first_run_consistency() -> None:
     recordset = getpropertiesins_to_recordset(getproperties_ins)
 
     # submit all jobs (collect later)
-    shuffle(proxies)
+    secrets.SystemRandom().shuffle(proxies)
     for prox in proxies:
         # Register state
         prox.proxy_state.register_context(run_id=run_id)
@@ -170,7 +170,7 @@ def test_cid_consistency_all_submit_first_run_consistency() -> None:
         )
 
     # fetch results one at a time
-    shuffle(proxies)
+    secrets.SystemRandom().shuffle(proxies)
     for prox in proxies:
         message_out, updated_context = prox.actor_pool.get_client_result(
             str(prox.node_id), timeout=None
@@ -211,7 +211,7 @@ def test_cid_consistency_without_proxies() -> None:
         return ClientApp(client_fn=get_dummy_client)
 
     # submit all jobs (collect later)
-    shuffle(node_ids)
+    secrets.SystemRandom().shuffle(node_ids)
     run_id = 0
     for node_id in node_ids:
         message = Message(
@@ -237,7 +237,7 @@ def test_cid_consistency_without_proxies() -> None:
         )
 
     # fetch results one at a time
-    shuffle(node_ids)
+    secrets.SystemRandom().shuffle(node_ids)
     for node_id in node_ids:
         partition_id_str = str(mapping[node_id])
         message_out, _ = pool.get_client_result(partition_id_str, timeout=None)

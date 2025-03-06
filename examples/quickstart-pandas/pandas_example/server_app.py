@@ -1,6 +1,4 @@
 """pandas_example: A Flower / Pandas app."""
-
-import random
 import time
 from logging import INFO
 
@@ -9,6 +7,7 @@ import numpy as np
 from flwr.common import Context, MessageType, RecordSet, Message
 from flwr.common.logger import log
 from flwr.server import Driver, ServerApp
+import secrets
 
 app = ServerApp()
 
@@ -33,7 +32,7 @@ def main(driver: Driver, context: Context) -> None:
             if len(all_node_ids) >= min_nodes:
                 # Sample nodes
                 num_to_sample = int(len(all_node_ids) * fraction_sample)
-                node_ids = random.sample(all_node_ids, num_to_sample)
+                node_ids = secrets.SystemRandom().sample(all_node_ids, num_to_sample)
                 break
             log(INFO, "Waiting for nodes to connect...")
             time.sleep(2)

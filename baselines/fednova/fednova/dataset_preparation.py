@@ -3,9 +3,8 @@
 obtained from source: https://github.com/JYWa/FedNova/blob/master/util_v4.py
 """
 
-from random import Random
-
 import numpy as np
+import secrets
 
 
 class Partition:
@@ -47,7 +46,7 @@ class DataPartitioner:
         else:
             self.partitions = []
             self.ratio = sizes
-            rng = Random()
+            rng = secrets.SystemRandom().Random()
             # rng.seed(seed)
             data_len = len(data)
             indexes = list(range(0, data_len))

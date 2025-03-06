@@ -16,7 +16,6 @@
 
 
 import io
-import random
 import string
 from datetime import datetime, timedelta
 from typing import Any, Optional, Union
@@ -26,6 +25,7 @@ from PIL import Image
 
 import datasets
 from datasets import ClassLabel, Dataset, DatasetDict, Features, Value
+import secrets
 
 
 def _generate_artificial_strings(
@@ -52,11 +52,11 @@ def _generate_artificial_strings(
     string_column : List[str]
         List of generated strings.
     """
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     unique_strings: set[str] = set()
     while len(unique_strings) < num_unique:
         random_str = "".join(
-            random.choices(string.ascii_letters + string.digits, k=string_length)
+            secrets.SystemRandom().choices(string.ascii_letters + string.digits, k=string_length)
         )
         unique_strings.add(random_str)
 
@@ -64,7 +64,7 @@ def _generate_artificial_strings(
     artificial_column = unique_strings_list.copy()
     remaining_to_allocate = num_rows - num_unique
     for _ in range(remaining_to_allocate):
-        artificial_column.append(random.choice(unique_strings_list))
+        artificial_column.append(secrets.choice(unique_strings_list))
     return artificial_column
 
 
@@ -73,13 +73,13 @@ def _generate_artificial_categories(num_rows: int, choices: list[Any]) -> list[s
     artificial_column = choices.copy()
     remaining_to_allocate = num_rows - len(choices)
     for _ in range(remaining_to_allocate):
-        artificial_column.append(random.choice(choices))
+        artificial_column.append(secrets.choice(choices))
     return artificial_column
 
 
 def _generate_random_word(length: int) -> str:
     """Generate a random word of the given length."""
-    return "".join(random.choices(string.ascii_letters, k=length))
+    return "".join(secrets.SystemRandom().choices(string.ascii_letters, k=length))
 
 
 def _generate_random_text_column(num_rows: int, length: int) -> list[str]:
@@ -97,10 +97,10 @@ def _generate_random_sentence(
     max_sentence_length: int,
 ) -> str:
     """Generate a random sentence with words of random lengths."""
-    sentence_length = random.randint(min_sentence_length, max_sentence_length)
+    sentence_length = secrets.SystemRandom().randint(min_sentence_length, max_sentence_length)
     sentence: list[str] = []
     while len(" ".join(sentence)) < sentence_length:
-        word_length = random.randint(min_word_length, max_word_length)
+        word_length = secrets.SystemRandom().randint(min_word_length, max_word_length)
         word = _generate_random_word(word_length)
         sentence.append(word)
     return " ".join(sentence)
@@ -126,7 +126,7 @@ def _generate_random_sentences(
 def _make_num_rows_none(column: list[Any], num_none: int) -> list[Any]:
     """Assign none num_none times to the given list."""
     column_copy = column.copy()
-    none_positions = random.sample(range(len(column_copy)), num_none)
+    none_positions = secrets.SystemRandom().sample(range(len(column_copy)), num_none)
     for pos in none_positions:
         column_copy[pos] = None
     return column_copy
@@ -140,7 +140,7 @@ def _generate_random_date(
 ) -> Union[str, datetime]:
     """Generate a random date between start_date and end_date."""
     time_between_dates = end_date - start_date
-    random_seconds = random.randint(0, int(time_between_dates.total_seconds()))
+    random_seconds = secrets.SystemRandom().randint(0, int(time_between_dates.total_seconds()))
     random_date = start_date + timedelta(seconds=random_seconds)
 
     if as_string:
@@ -164,12 +164,12 @@ def _generate_random_date_column(
 
 def _generate_random_int_column(num_rows: int, min_int: int, max_int: int) -> list[int]:
     """Generate a list of ints."""
-    return [random.randint(min_int, max_int) for _ in range(num_rows)]
+    return [secrets.SystemRandom().randint(min_int, max_int) for _ in range(num_rows)]
 
 
 def _generate_random_bool_column(num_rows: int) -> list[bool]:
     """Generate a list of bools."""
-    return [random.choice([True, False]) for _ in range(num_rows)]
+    return [secrets.choice([True, False]) for _ in range(num_rows)]
 
 
 def _generate_random_image_column(

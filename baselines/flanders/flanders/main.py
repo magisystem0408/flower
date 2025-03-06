@@ -2,7 +2,6 @@
 
 import importlib
 import os
-import random
 import shutil
 
 import flwr as fl
@@ -20,6 +19,7 @@ from .client import FMnistClient, MnistClient
 from .dataset import do_fl_partitioning, get_fmnist, get_mnist
 from .server import EnhancedServer
 from .utils import fmnist_evaluate, l2_norm, mnist_evaluate
+import secrets
 
 
 # pylint: disable=too-many-locals, too-many-branches, too-many-statements
@@ -38,7 +38,7 @@ def main(cfg: DictConfig) -> None:
     np.random.set_state(
         np.random.RandomState(seed).get_state()  # pylint: disable=no-member
     )
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
 

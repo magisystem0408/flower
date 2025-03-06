@@ -1,4 +1,3 @@
-import random
 from collections import OrderedDict
 from typing import List
 
@@ -8,6 +7,7 @@ import torch
 from datasets import Dataset
 from tqdm import tqdm
 from transformers import WhisperForConditionalGeneration
+import secrets
 
 remove_cols = ["file", "audio", "label", "is_unknown", "speaker_id", "utterance_id"]
 
@@ -123,7 +123,7 @@ def prepare_silences_dataset(train_dataset, ratio_silence: float = 0.1) -> Datas
         sr = sil["audio"]["sampling_rate"]
         print(f"Extracting audio from: {sil['file']} ...")
         for _ in range(num_silence_per_bkg):
-            random_offset = random.randint(0, len(sil_array) - sr - 1)
+            random_offset = secrets.SystemRandom().randint(0, len(sil_array) - sr - 1)
             sil_array_crop = sil_array[random_offset : random_offset + sr]
 
             entry = sil

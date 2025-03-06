@@ -1,6 +1,4 @@
 """secaggexample: A Flower with SecAgg+ app."""
-
-import random
 from collections import OrderedDict
 from unittest.mock import Mock
 
@@ -12,6 +10,7 @@ from flwr_datasets import FederatedDataset
 from flwr_datasets.partitioner import IidPartitioner
 from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, Normalize, ToTensor
+import secrets
 
 
 class Net(nn.Module):
@@ -36,7 +35,7 @@ class Net(nn.Module):
 
 
 def make_net(seed=42):
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     return Net()

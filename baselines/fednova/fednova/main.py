@@ -1,7 +1,6 @@
 """Entry script for Federated training on CIFAR-10 using FedNova."""
 
 import os
-import random
 import time
 from collections import OrderedDict
 from functools import partial
@@ -20,6 +19,7 @@ from fednova.dataset import load_datasets
 from fednova.models import test
 from fednova.strategy import weighted_average
 from fednova.utils import fit_config
+import secrets
 
 
 @hydra.main(config_path="conf", config_name="base", version_base=None)
@@ -36,7 +36,7 @@ def main(cfg: DictConfig) -> None:  # pylint: disable=too-many-locals
     # Set seeds for reproduceability
     torch.manual_seed(cfg.seed)
     np.random.seed(cfg.seed)
-    random.seed(cfg.seed)
+    secrets.SystemRandom().seed(cfg.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(cfg.seed)
     # torch.backends.cudnn.deterministic = True

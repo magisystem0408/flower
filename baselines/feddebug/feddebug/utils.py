@@ -4,8 +4,6 @@ They are not directly relevant to  the other (more FL specific) python modules. 
 example, you may define here things like: loading a model from a checkpoint, saving
 results, plotting.
 """
-
-import random
 from logging import INFO
 
 import matplotlib.pyplot as plt
@@ -13,11 +11,12 @@ import numpy as np
 import torch
 from flwr.common.logger import log
 from torchvision import transforms
+import secrets
 
 
 def seed_everything(seed=786):
     """Seed everything."""
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 

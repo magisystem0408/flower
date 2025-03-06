@@ -3,7 +3,6 @@
 import multiprocessing
 import os
 import pickle
-import random
 import sys
 import time
 import traceback
@@ -19,6 +18,7 @@ from omegaconf import DictConfig, OmegaConf
 
 import dasha.dataset
 from dasha.dataset_preparation import find_pre_downloaded_or_download_dataset
+import secrets
 
 LOCAL_ADDRESS = "localhost:8080"
 
@@ -67,7 +67,7 @@ def _parallel_run(
     try:
         torch.manual_seed(seed)
         np.random.seed(seed)
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
         local_address = (
             cfg.local_address if cfg.local_address is not None else LOCAL_ADDRESS
         )

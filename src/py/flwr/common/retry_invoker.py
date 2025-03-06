@@ -16,7 +16,6 @@
 
 
 import itertools
-import random
 import time
 from collections.abc import Generator, Iterable
 from dataclasses import dataclass
@@ -31,6 +30,7 @@ from flwr.common.typing import RunNotRunningException
 from flwr.proto.clientappio_pb2_grpc import ClientAppIoStub
 from flwr.proto.serverappio_pb2_grpc import ServerAppIoStub
 from flwr.proto.simulationio_pb2_grpc import SimulationIoStub
+import secrets
 
 
 def exponential(
@@ -99,7 +99,7 @@ def full_jitter(max_value: float) -> float:
     float
         A random float that is less than max_value.
     """
-    return random.uniform(0, max_value)
+    return secrets.SystemRandom().uniform(0, max_value)
 
 
 @dataclass

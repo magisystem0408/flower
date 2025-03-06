@@ -1,6 +1,4 @@
 """HeteroFL ClientManager."""
-
-import random
 import threading
 from logging import INFO
 from typing import Dict, List, Optional
@@ -10,6 +8,7 @@ import torch
 from flwr.common.logger import log
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.criterion import Criterion
+import secrets
 
 # from heterofl.utils import ModelRateManager
 
@@ -202,6 +201,6 @@ class ClientManagerHeteroFL(fl.server.ClientManager):
         random_indices = torch.randperm(len(available_cids))[:num_clients]
         # Use the random indices to select clients
         sampled_cids = [available_cids[i] for i in random_indices]
-        sampled_cids = random.sample(available_cids, num_clients)
+        sampled_cids = secrets.SystemRandom().sample(available_cids, num_clients)
         print(f"Sampled CIDS =  {sampled_cids}")
         return [self.clients[cid] for cid in sampled_cids]
