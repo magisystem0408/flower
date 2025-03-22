@@ -19,6 +19,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
+from security import safe_command
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 INDEX = os.path.join(ROOT, "examples", "docs", "source", "index.rst")
@@ -280,4 +281,4 @@ def _main():
 
 if __name__ == "__main__":
     _main()
-    subprocess.call(f"cd {ROOT}/examples/docs && make html", shell=True)
+    safe_command.run(subprocess.call, f"cd {ROOT}/examples/docs && make html", shell=True)

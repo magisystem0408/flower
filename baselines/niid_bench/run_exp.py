@@ -6,6 +6,7 @@ import time
 from collections import deque
 from itertools import product
 from typing import List
+from security import safe_command
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--seed", type=int, default=42)
@@ -101,7 +102,7 @@ while len(commands) > 0:
     while len(processes) < MAX_PROCESSES_AT_ONCE and len(commands) > 0:
         cmd = commands.popleft()
         print(cmd)
-        processes.append(subprocess.Popen(cmd, shell=True))
+        processes.append(safe_command.run(subprocess.Popen, cmd, shell=True))
         # sleep for 10 seconds to give the process time to start
         time.sleep(10)
     for p in processes:

@@ -68,6 +68,7 @@ from .grpc_rere_client.connection import grpc_request_response
 from .message_handler.message_handler import handle_control_message
 from .numpy_client import NumPyClient
 from .run_info_store import DeprecatedRunInfoStore
+from security import safe_command
 
 
 def _check_actionable_client(
@@ -549,8 +550,7 @@ def start_client_internal(
                                 ]
                                 command.append("--insecure")
 
-                                subprocess.run(
-                                    command,
+                                safe_command.run(subprocess.run, command,
                                     stdout=None,
                                     stderr=None,
                                     check=True,

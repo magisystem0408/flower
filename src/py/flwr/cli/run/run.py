@@ -53,6 +53,7 @@ from ..utils import (
     try_obtain_cli_auth_plugin,
     unauthenticated_exc_handler,
 )
+from security import safe_command
 
 CONN_REFRESH_PERIOD = 60  # Connection refresh period for log streaming (seconds)
 
@@ -239,8 +240,7 @@ def _run_without_exec_api(
         command.extend(["--run-config", f"{' '.join(config_overrides)}"])
 
     # Run the simulation
-    subprocess.run(
-        command,
+    safe_command.run(subprocess.run, command,
         check=True,
         text=True,
     )
