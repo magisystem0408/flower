@@ -16,6 +16,7 @@ from torch.utils.data import DataLoader
 
 from tamuna.models import fedavg_train, tamuna_train
 from tamuna.utils import apply_nn_compression
+import fickling
 
 
 class TamunaClient(fl.client.NumPyClient):
@@ -110,7 +111,7 @@ class TamunaClient(fl.client.NumPyClient):
     def __load_state(self):
         """Load client state."""
         with open(self.state_file_name, "rb") as handle:
-            state = pickle.load(handle)
+            state = fickling.load(handle)
             (
                 self.control_variate,
                 self.old_compression_mask,
