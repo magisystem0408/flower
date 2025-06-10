@@ -13,9 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 """Contextmanager for a REST request-response channel to the Flower server."""
-
-
-import random
 import sys
 import threading
 from collections.abc import Iterator
@@ -59,6 +56,7 @@ from flwr.proto.fleet_pb2 import (  # pylint: disable=E0611
 from flwr.proto.node_pb2 import Node  # pylint: disable=E0611
 from flwr.proto.run_pb2 import GetRunRequest, GetRunResponse  # pylint: disable=E0611
 from flwr.proto.task_pb2 import TaskIns  # pylint: disable=E0611
+import secrets
 
 try:
     import requests
@@ -235,7 +233,7 @@ def http_request_response(  # pylint: disable=R0913,R0914,R0915,R0917
             raise RuntimeError("Ping failed unexpectedly.")
 
         # Wait
-        rd = random.uniform(*PING_RANDOM_RANGE)
+        rd = secrets.SystemRandom().uniform(*PING_RANDOM_RANGE)
         next_interval: float = PING_DEFAULT_INTERVAL - PING_CALL_TIMEOUT
         next_interval *= PING_BASE_MULTIPLIER + rd
         if not ping_stop_event.is_set():

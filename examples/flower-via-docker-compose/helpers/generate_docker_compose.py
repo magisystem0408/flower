@@ -1,5 +1,5 @@
 import argparse
-import random
+import secrets
 
 parser = argparse.ArgumentParser(description="Generated Docker Compose")
 parser.add_argument(
@@ -107,7 +107,7 @@ services:
     # Add client services
     for i in range(1, args.total_clients + 1):
         if args.random:
-            config = random.choice(client_configs)
+            config = secrets.choice(client_configs)
         else:
             config = client_configs[(i - 1) % len(client_configs)]
         docker_compose_content += f"""

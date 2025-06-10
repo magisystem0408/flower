@@ -1,5 +1,4 @@
 import argparse
-import random
 
 import numpy as np
 import torch
@@ -15,8 +14,9 @@ from utils import (
     remove_cols,
     train_one_epoch,
 )
+import secrets
 
-random.seed(1989)
+secrets.SystemRandom().seed(1989)
 torch.set_float32_matmul_precision(
     "high"
 )  #  If “high” or “medium” are set then the TensorFloat32 is used

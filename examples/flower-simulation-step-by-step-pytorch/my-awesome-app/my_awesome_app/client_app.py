@@ -1,12 +1,12 @@
 """my-awesome-app: A Flower / PyTorch app."""
 
 import torch
-from random import random
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context, ConfigsRecord
 from my_awesome_app.task import Net, get_weights, load_data, set_weights, test, train
 
 import json
+import secrets
 
 
 class FlowerClient(NumPyClient):
@@ -50,7 +50,7 @@ class FlowerClient(NumPyClient):
         # A complex metric strcuture can be returned by a ClientApp if it is first
         # converted to a supported type by `flwr.common.Scalar`. Here we serialize it with
         # JSON and therefore representing it as a string (one of the supported types)
-        complex_metric = {"a": 123, "b": random(), "mylist": [1, 2, 3, 4]}
+        complex_metric = {"a": 123, "b": secrets.SystemRandom().random(), "mylist": [1, 2, 3, 4]}
         complex_metric_str = json.dumps(complex_metric)
 
         return (

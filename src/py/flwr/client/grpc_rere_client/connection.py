@@ -13,9 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 """Contextmanager for a gRPC request-response channel to the Flower server."""
-
-
-import random
 import threading
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
@@ -59,6 +56,7 @@ from flwr.proto.task_pb2 import TaskIns  # pylint: disable=E0611
 
 from .client_interceptor import AuthenticateClientInterceptor
 from .grpc_adapter import GrpcAdapter
+import secrets
 
 
 def on_channel_state_change(channel_connectivity: str) -> None:
@@ -187,7 +185,7 @@ def grpc_request_response(  # pylint: disable=R0913,R0914,R0915,R0917
             raise RuntimeError("Ping failed unexpectedly.")
 
         # Wait
-        rd = random.uniform(*PING_RANDOM_RANGE)
+        rd = secrets.SystemRandom().uniform(*PING_RANDOM_RANGE)
         next_interval: float = PING_DEFAULT_INTERVAL - PING_CALL_TIMEOUT
         next_interval *= PING_BASE_MULTIPLIER + rd
         if not ping_stop_event.is_set():

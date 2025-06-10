@@ -13,9 +13,6 @@
 # limitations under the License.
 # ==============================================================================
 """(De-)serialization tests."""
-
-
-import random
 import string
 from collections import OrderedDict
 from typing import Any, Callable, Optional, TypeVar, Union, cast
@@ -76,6 +73,7 @@ from .serde import (
     status_from_proto,
     status_to_proto,
 )
+import secrets
 
 
 def test_serialisation_deserialisation() -> None:
@@ -156,7 +154,7 @@ class RecordMaker:
     """A record maker based on a seeded random number generator."""
 
     def __init__(self, state: int = 42) -> None:
-        self.rng = random.Random(state)
+        self.rng = secrets.SystemRandom().Random(state)
 
     def randbytes(self, n: int) -> bytes:
         """Create a bytes."""

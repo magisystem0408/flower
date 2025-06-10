@@ -1,10 +1,10 @@
 """Generate 1-second audio clip from background sounds in speechcommands."""
 
 import os
-import random
 
 import scipy.io.wavfile as wav
 from tqdm import tqdm
+import secrets
 
 # Folder path where your audio files are stored
 FOLDER_PATH = "datasets/speech_commands/Data/Train/_silence_"
@@ -26,7 +26,7 @@ def split_audio_v2(read_file_path, samples_per_clip=1000):
 
     # extract `samples_per_clip` 1-second long clips at random
     for i in tqdm(range(samples_per_clip)):
-        start = random.randint(0, len(data) - sample_rate)
+        start = secrets.SystemRandom().randint(0, len(data) - sample_rate)
         segment = data[start : start + sample_rate]
         new_filename = file_path.replace(".wav", "") + f"_{i:05d}.wav"
 

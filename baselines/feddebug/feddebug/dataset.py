@@ -8,8 +8,6 @@ partitioned, please include all those functions and logic in the
 `dataset_preparation.py` module. You can use all those functions from functions/methods
 defined here of course.
 """
-
-import random
 from logging import INFO
 
 import numpy as np
@@ -20,6 +18,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 from feddebug.utils import create_transform
+import secrets
 
 
 def _add_noise_in_data(my_dataset, noise_rate, num_classes):
@@ -35,7 +34,7 @@ def _add_noise_in_data(my_dataset, noise_rate, num_classes):
                 current_label = new_labels[idx]
                 possible_labels = list(range(num_classes))
                 possible_labels.remove(current_label)
-                new_labels[idx] = random.choice(possible_labels)
+                new_labels[idx] = secrets.choice(possible_labels)
 
             labels[indices_to_flip] = new_labels
             batch["label"] = labels
