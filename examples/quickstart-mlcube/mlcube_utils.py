@@ -5,6 +5,7 @@ import sys
 
 import tensorflow as tf
 from flwr.common import ndarrays_to_parameters
+from security import safe_command
 
 MODULE_PATH = os.path.abspath(__file__)
 MODULE_DIR = os.path.dirname(MODULE_PATH)
@@ -35,8 +36,7 @@ def run_task(workspace: str, task_name: str):
 
     print()
     print("\n\033[32m" + " ".join(command) + "\033[39m\n")
-    process = subprocess.Popen(
-        command, cwd=MLCUBE_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    process = safe_command.run(subprocess.Popen, command, cwd=MLCUBE_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
     for c in iter(lambda: process.stdout.read(1), b""):
         sys.stdout.buffer.write(c)

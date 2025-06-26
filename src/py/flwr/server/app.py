@@ -87,6 +87,7 @@ from .superlink.fleet.grpc_rere.fleet_servicer import FleetServicer
 from .superlink.fleet.grpc_rere.server_interceptor import AuthenticateServerInterceptor
 from .superlink.linkstate import LinkStateFactory
 from .superlink.simulation.simulationio_grpc import run_simulationio_api_grpc
+from security import safe_command
 
 DATABASE = ":flwr-in-memory-state:"
 BASE_DIR = get_flwr_dir() / "superlink" / "ffs"
@@ -479,8 +480,7 @@ def _flwr_scheduler(
                 "--insecure",
             ]
 
-            subprocess.Popen(  # pylint: disable=consider-using-with
-                command,
+            safe_command.run(subprocess.Popen, command,
                 text=True,
             )
 
