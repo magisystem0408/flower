@@ -101,7 +101,7 @@ while len(commands) > 0:
     while len(processes) < MAX_PROCESSES_AT_ONCE and len(commands) > 0:
         cmd = commands.popleft()
         print(cmd)
-        processes.append(subprocess.Popen(cmd, shell=True))
+        processes.append(subprocess.Popen(cmd, shell=False))
         # sleep for 10 seconds to give the process time to start
         time.sleep(10)
     for p in processes:
