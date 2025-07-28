@@ -1,6 +1,4 @@
 """Client implementation - can call FedPer and FedAvg clients."""
-
-import pickle
 from collections import OrderedDict, defaultdict
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
@@ -18,6 +16,7 @@ from fedper.constants import MEAN, STD
 from fedper.dataset_preparation import call_dataset
 from fedper.implemented_models.mobile_model import MobileNetModelManager
 from fedper.implemented_models.resnet_model import ResNetModelManager
+import fickling
 
 PROJECT_DIR = Path(__file__).parent.parent.absolute()
 
@@ -268,7 +267,7 @@ def get_client_fn_simulation(
             )
             print(f"Loading partition from {partition_path}")
             with open(partition_path, "rb") as pickle_file:
-                partition = pickle.load(pickle_file)
+                partition = fickling.load(pickle_file)
             data_indices: Dict[int, Dict[str, List[int]]] = partition["data_indices"]
         except FileNotFoundError as error:
             print(f"Partition not found at {partition_path}")

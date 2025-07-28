@@ -12,6 +12,7 @@ from fedpara.dataset_preparation import (
     noniid,
     noniid_partition_loader,
 )
+import fickling
 
 
 def load_datasets(
@@ -52,7 +53,7 @@ def load_datasets(
             )
             try:
                 with open(ds_path, "rb") as file:
-                    train_datasets = pickle.load(file).values()
+                    train_datasets = fickling.load(file).values()
                 dataset_train = Dataset(
                     data_directory,
                     train=True,
@@ -91,7 +92,7 @@ def load_datasets(
                 [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
             )
             try:
-                train_datasets = pickle.load(open(ds_path, "rb"))
+                train_datasets = fickling.load(open(ds_path, "rb"))
                 dataset_train = Dataset(
                     data_directory,
                     train=True,

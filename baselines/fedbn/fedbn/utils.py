@@ -4,12 +4,11 @@ They are not directly relevant to  the other (more FL specific) python modules. 
 example, you may define here things like: loading a model from a checkpoint, saving
 results, plotting.
 """
-
-import pickle
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import yaml
+import fickling
 
 
 def save_fig(name, fig):
@@ -30,7 +29,7 @@ def save_fig(name, fig):
 
 def _read_pickle_and_config(path_to_pickle):
     with open(path_to_pickle, "rb") as handle:
-        data = pickle.load(handle)
+        data = fickling.load(handle)
 
     config_path = Path(path_to_pickle).parent / ".hydra" / "config.yaml"
     with open(config_path, "r") as file:

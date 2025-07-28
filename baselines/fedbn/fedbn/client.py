@@ -13,6 +13,7 @@ from omegaconf import DictConfig
 from torch.utils.data import DataLoader
 
 from fedbn.models import CNNModel, test, train
+import fickling
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -136,7 +137,7 @@ class FedBNFlowerClient(FlowerClient):
     def _load_bn_statedict(self) -> Dict[str, torch.tensor]:
         """Load pickle with BN state_dict and return as dict."""
         with open(self.bn_state_pkl, "rb") as handle:
-            data = pickle.load(handle)
+            data = fickling.load(handle)
         bn_stae_dict = {k: torch.tensor(v) for k, v in data.items()}
         return bn_stae_dict
 
