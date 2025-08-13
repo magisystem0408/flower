@@ -48,7 +48,7 @@ def main(cfg: DictConfig) -> None:
     fedavg_histories = run_fedavg(cfg, save_path, testloader, trainloaders)
 
     with open("model_dim.txt", "rt") as handle:
-        dim = int(handle.readline())
+        dim = int(handle.readline(5_000_000))
 
     compare_histories(tamuna_histories, fedavg_histories, dim, save_path, cfg)
 
